@@ -19,6 +19,7 @@ const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const { user, logOut } = UserAuth();
+
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
@@ -98,21 +99,29 @@ const NavBar = () => {
                     margin: "20px",
                   }}
                 >
-                  <Btn
-                    color="secondary"
-                    variant="contained"
-                    onClick={() => navigate("/signin")}
-                  >
-                    SignIn
-                  </Btn>
-
-                  <Btn
-                    color="secondary"
-                    variant="outlined"
-                    onClick={() => navigate("/signup")}
-                  >
-                    SignUp
-                  </Btn>
+                  {!user && (
+                    <>
+                      {" "}
+                      <Btn
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => navigate("/signin")}
+                      >
+                        SignIn
+                      </Btn>
+                      <Btn
+                        color="secondary"
+                        variant="outlined"
+                        onClick={() => navigate("/signup")}
+                      >
+                        SignUp
+                      </Btn>
+                    </>
+                  )}
+                  <MenuItem>
+                    <Typography textAlign="center">Profile</Typography>
+                  </MenuItem>
+                  <Divider />
                 </Box>
               </>
             </Drawer>
@@ -175,10 +184,7 @@ const NavBar = () => {
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/2.jpg"
-                    />
+                    <Avatar alt={user.displayName} src={user.photoURL} />
                   </IconButton>
                 </Tooltip>
                 <Menu

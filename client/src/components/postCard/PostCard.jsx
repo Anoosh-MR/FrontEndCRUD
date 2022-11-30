@@ -1,35 +1,68 @@
 import React from "react";
+import postDataService from "../../services/post.services";
 
 import {
   Card,
-  CardHeader,
   CardMedia,
   CardContent,
-  Avatar,
   Typography,
+  CardActions,
+  Divider,
+  Button,
 } from "@mui/material";
 
-export default function PostCard() {
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditPost from "../Editpost/EditPost";
+
+export default function PostCard({ singlePost }) {
+  const handleDelete = async (id) => {
+    await postDataService.deletePost(id);
+  };
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardHeader
-        avatar={<Avatar aria-label="recipe">R</Avatar>}
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
+    <Card sx={{ width: 345, height: 375 }}>
       <CardMedia
         component="img"
         height="194"
-        image="https://static-cse.canva.com/blob/666314/bestfreestockphotos.jpg"
-        alt="Paella dish"
+        image={singlePost.picture}
+        alt={singlePost.title}
       />
-      <CardContent>
+      <CardContent
+        sx={{
+          height: "100px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+      >
+        <Typography variant="h5" color="text.secondary">
+          {singlePost.title}
+        </Typography>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          {singlePost.desc.length > 200
+            ? singlePost.desc.slice(0, 200) + "...."
+            : singlePost.desc}
         </Typography>
       </CardContent>
+      <CardActions
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "10px",
+          bgcolor: "lightgray",
+        }}
+      >
+        <Divider />
+        <Button
+          variant="outlined"
+          aria-label="delete"
+          onClick={() => handleDelete(singlePost.id)}
+        >
+          <DeleteIcon color="error" />
+        </Button>
+        <EditPost />
+      </CardActions>
     </Card>
   );
 }

@@ -1,11 +1,23 @@
-import { Box, Fab } from "@mui/material";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { Box } from "@mui/material";
 import { Container } from "@mui/system";
-import React from "react";
 import NavBar from "../../components/navbar/NavBar";
 import PostCard from "../../components/postCard/PostCard";
 import CreatePost from "../../components/CreatePost/CreatePost";
-
+import postDataService from "../../services/post.services";
 const Home = () => {
+  const [post, setpost] = useState([]);
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  const getPosts = async () => {
+    const data = await postDataService.getAllPost();
+
+    setpost(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
   return (
     <>
       <Box>
@@ -22,11 +34,9 @@ const Home = () => {
             gap: "20px",
           }}
         >
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
+          {post.map((singlePost) => (
+            <PostCard key={singlePost.createdAt} singlePost={singlePost} />
+          ))}
         </Container>
       </Box>
     </>
