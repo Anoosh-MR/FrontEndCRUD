@@ -13,12 +13,14 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditPost from "../Editpost/EditPost";
 import { UserAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 export const PostCard = ({ singlePost }) => {
   const { fetchagain, setFetchAgain, user } = UserAuth();
   const handleDelete = async (id) => {
     await postDataService.deletePost(id);
     setFetchAgain(!fetchagain);
+    toast.success("Post deleted");
   };
   return (
     <Card sx={{ width: 345, height: 375 }}>
@@ -35,10 +37,14 @@ export const PostCard = ({ singlePost }) => {
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "column",
+          padding: "3px",
+          marginTop: "5px",
         }}
       >
         <Typography variant="h5" color="text.secondary">
-          {singlePost.title}
+          {singlePost.title.length > 10
+            ? singlePost.title.slice(0, 10)
+            : singlePost.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {singlePost.desc.length > 200
@@ -56,6 +62,7 @@ export const PostCard = ({ singlePost }) => {
               justifyContent: "center",
               gap: "10px",
               bgcolor: "lightgray",
+              marginTop: "20px",
             }}
           >
             <Button

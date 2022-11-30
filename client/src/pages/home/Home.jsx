@@ -9,7 +9,7 @@ import postDataService from "../../services/post.services";
 import { UserAuth } from "../../context/AuthContext";
 const Home = () => {
   const [post, setpost] = useState([]);
-  const { fetchagain } = UserAuth();
+  const { fetchagain, user } = UserAuth();
 
   useEffect(() => {
     getPosts();
@@ -24,7 +24,8 @@ const Home = () => {
     <>
       <Box>
         <NavBar />
-        <CreatePost />
+        {user && <CreatePost />}
+
         <Container
           maxWidth="xl"
           sx={{

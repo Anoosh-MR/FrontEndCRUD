@@ -3,11 +3,9 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
-  signInWithRedirect,
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../firebase";
-import { json } from "react-router-dom";
 
 const AuthContext = createContext();
 

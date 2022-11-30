@@ -20,6 +20,7 @@ import { Timestamp } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
 import "react-toastify/dist/ReactToastify.css";
+import { Closeicon, ModelBox } from "./CreatePost.styled";
 
 const style = {
   position: "absolute",
@@ -40,7 +41,13 @@ const CreatePost = () => {
   const [progress, setProgress] = useState();
   const { user, setFetchAgain, fetchagain } = UserAuth();
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setfile("");
+    setfile("");
+    setDesc("");
+    setTitle("");
+  };
 
   const handleSubmit = async () => {
     if (!title || !desc) {
@@ -74,12 +81,9 @@ const CreatePost = () => {
           };
 
           postDataService.addPost(newPost);
-          toast.success("Post add successfully!");
+          toast.success("Post added!");
           setOpen(false);
           setFetchAgain(!fetchagain);
-          setfile("");
-          setDesc("");
-          setTitle("");
           setProgress("");
         });
       }
@@ -125,21 +129,10 @@ const CreatePost = () => {
       >
         <Box sx={style}>
           {progress ? (
-            <CircularProgress
-              size="100"
-              variant="determinate"
-              value={progress}
-            />
+            <CircularProgress variant="determinate" value={80} />
           ) : (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "10px",
-                flexDirection: "Column",
-              }}
-            >
+            <ModelBox>
+              <Closeicon onClick={handleClose} />
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 Create Post
               </Typography>
@@ -148,8 +141,8 @@ const CreatePost = () => {
                   component="img"
                   alt="green iguana"
                   height="140"
-                  width="100"
                   image={file && URL.createObjectURL(file)}
+                  onClick={() => setfile("")}
                 />
               ) : (
                 <IconButton
@@ -187,7 +180,7 @@ const CreatePost = () => {
               <Button onClick={handleSubmit} variant="outlined">
                 Create
               </Button>
-            </Box>
+            </ModelBox>
           )}
         </Box>
       </Modal>

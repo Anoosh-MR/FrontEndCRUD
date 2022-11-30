@@ -20,6 +20,7 @@ import { Timestamp } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
 import "react-toastify/dist/ReactToastify.css";
+import { Closeicon, ModelBox } from "./EditPost.styled";
 
 const style = {
   position: "absolute",
@@ -40,7 +41,12 @@ const EditPost = ({ singlePost }) => {
   const [progress, setProgress] = useState();
   const { user, setFetchAgain, fetchagain } = UserAuth();
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setfile("");
+    setDesc("");
+    setTitle("");
+  };
 
   const handleSubmit = async () => {
     if (!title || !desc) {
@@ -74,12 +80,9 @@ const EditPost = ({ singlePost }) => {
           };
 
           postDataService.updatePost(singlePost.id, newPost);
-          toast.success("Post Edit successfully!");
+          toast.success("Post Edited!");
           setOpen(false);
           setFetchAgain(!fetchagain);
-          setfile("");
-          setDesc("");
-          setTitle("");
           setProgress("");
         });
       }
@@ -120,18 +123,12 @@ const EditPost = ({ singlePost }) => {
               value={progress}
             />
           ) : (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "10px",
-                flexDirection: "Column",
-              }}
-            >
+            <ModelBox>
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 Edit Post
               </Typography>
+              <Closeicon onClick={handleClose} />
+
               {file ? (
                 <CardMedia
                   component="img"
@@ -139,6 +136,7 @@ const EditPost = ({ singlePost }) => {
                   height="140"
                   width="100"
                   image={file && URL.createObjectURL(file)}
+                  onClick={() => setfile("")}
                 />
               ) : (
                 <IconButton
@@ -176,7 +174,7 @@ const EditPost = ({ singlePost }) => {
               <Button onClick={handleSubmit} variant="outlined">
                 Edit
               </Button>
-            </Box>
+            </ModelBox>
           )}
         </Box>
       </Modal>

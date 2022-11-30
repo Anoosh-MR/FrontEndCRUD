@@ -14,6 +14,7 @@ import { Divider, Drawer } from "@mui/material";
 import { UserAuth } from "../../context/AuthContext";
 import { Btn } from "./Navbar.styled";
 import { useNavigate } from "react-router-dom";
+import { UserBadge } from "../userBadge/UserBadge";
 
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -39,7 +40,7 @@ const NavBar = () => {
 
   return (
     <AppBar
-      position="static"
+      position="sticky"
       sx={{
         borderRadius: "20px",
         marginTop: "5px ",
@@ -54,15 +55,8 @@ const NavBar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="/"
             sx={{
-              mr: 2,
               display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
             }}
           >
             POST
@@ -101,7 +95,6 @@ const NavBar = () => {
                 >
                   {!user && (
                     <>
-                      {" "}
                       <Btn
                         color="secondary"
                         variant="contained"
@@ -118,9 +111,7 @@ const NavBar = () => {
                       </Btn>
                     </>
                   )}
-                  <MenuItem>
-                    <Typography textAlign="center">Profile</Typography>
-                  </MenuItem>
+                  <UserBadge user={user} />
                   <Divider />
                 </Box>
               </>
@@ -142,7 +133,7 @@ const NavBar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            POST
           </Typography>
 
           <Box
@@ -169,13 +160,6 @@ const NavBar = () => {
                   >
                     SignIn
                   </Btn>
-                  <Btn
-                    color="secondary"
-                    variant="outlined"
-                    onClick={() => navigate("/signup")}
-                  >
-                    SignUp
-                  </Btn>
                 </Box>
               </>
             )}
@@ -188,6 +172,7 @@ const NavBar = () => {
                   </IconButton>
                 </Tooltip>
                 <Menu
+                  anchorEl={anchorElUser}
                   sx={{ mt: "45px" }}
                   id="menu-appbar"
                   anchorOrigin={{
@@ -198,9 +183,7 @@ const NavBar = () => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">Profile</Typography>
-                  </MenuItem>
+                  <UserBadge user={user} />
                   <Divider />
                   <MenuItem onClick={logOut}>
                     <Typography textAlign="center">LogOut</Typography>
