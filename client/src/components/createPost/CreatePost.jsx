@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   CardMedia,
+  CircularProgress,
   Fab,
   IconButton,
   Modal,
@@ -36,10 +37,8 @@ const CreatePost = () => {
   const [title, setTitle] = useState();
   const [desc, setDesc] = useState();
   const [file, setfile] = useState();
-
   const [progress, setProgress] = useState();
-  const [url, setUrl] = useState();
-  const { user } = UserAuth();
+  const { user, setFetchAgain, fetchagain } = UserAuth();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -77,6 +76,11 @@ const CreatePost = () => {
           postDataService.addPost(newPost);
           toast.success("Post add successfully!");
           setOpen(false);
+          setFetchAgain(!fetchagain);
+          setfile("");
+          setDesc("");
+          setTitle("");
+          setProgress("");
         });
       }
     );
@@ -120,62 +124,71 @@ const CreatePost = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "10px",
-              flexDirection: "Column",
-            }}
-          >
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Create Post
-            </Typography>
-            {file ? (
-              <CardMedia
-                component="img"
-                alt="green iguana"
-                height="140"
-                width="100"
-                image={file && URL.createObjectURL(file)}
-              />
-            ) : (
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="label"
-              >
-                <input
-                  hidden
-                  accept="image/*"
-                  type="file"
-                  onChange={(e) => setfile(e.target.files[0])}
+          {progress ? (
+            <CircularProgress
+              size="100"
+              variant="determinate"
+              value={progress}
+            />
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+                flexDirection: "Column",
+              }}
+            >
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Create Post
+              </Typography>
+              {file ? (
+                <CardMedia
+                  component="img"
+                  alt="green iguana"
+                  height="140"
+                  width="100"
+                  image={file && URL.createObjectURL(file)}
                 />
-                <AddPhotoAlternateIcon />
-              </IconButton>
-            )}
+              ) : (
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="label"
+                >
+                  <input
+                    hidden
+                    accept="image/*"
+                    type="file"
+                    onChange={(e) => setfile(e.target.files[0])}
+                  />
+                  <AddPhotoAlternateIcon />
+                </IconButton>
+              )}
 
-            <TextField
-              id="filled-basic"
-              label="Title"
-              variant="filled"
-              sx={{ m: 1, width: "40ch" }}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <TextField
-              id="filled-basic"
-              label="Descripton"
-              variant="filled"
-              multiline
-              rows={5}
-              sx={{ m: 1, width: "40ch" }}
-              onChange={(e) => setDesc(e.target.value)}
-            />
-            <Button onClick={handleSubmit} variant="outlined">
-              Create
-            </Button>
-          </Box>
+              <TextField
+                id="filled-basic"
+                label="Title"
+                variant="filled"
+                sx={{ m: 1, width: "40ch" }}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <TextField
+                id="filled-basic"
+                label="Descripton"
+                variant="filled"
+                multiline
+                rows={5}
+                sx={{ m: 1, width: "40ch" }}
+                onChange={(e) => setDesc(e.target.value)}
+              />
+
+              <Button onClick={handleSubmit} variant="outlined">
+                Create
+              </Button>
+            </Box>
+          )}
         </Box>
       </Modal>
     </>

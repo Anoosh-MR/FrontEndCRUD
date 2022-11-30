@@ -65,7 +65,7 @@ const NavBar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            POST
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

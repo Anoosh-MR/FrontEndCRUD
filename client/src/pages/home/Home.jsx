@@ -6,12 +6,14 @@ import NavBar from "../../components/navbar/NavBar";
 import PostCard from "../../components/postCard/PostCard";
 import CreatePost from "../../components/CreatePost/CreatePost";
 import postDataService from "../../services/post.services";
+import { UserAuth } from "../../context/AuthContext";
 const Home = () => {
   const [post, setpost] = useState([]);
+  const { fetchagain } = UserAuth();
 
   useEffect(() => {
     getPosts();
-  }, []);
+  }, [fetchagain]);
 
   const getPosts = async () => {
     const data = await postDataService.getAllPost();

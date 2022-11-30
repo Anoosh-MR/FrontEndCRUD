@@ -7,16 +7,18 @@ import {
   CardContent,
   Typography,
   CardActions,
-  Divider,
   Button,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditPost from "../Editpost/EditPost";
+import { UserAuth } from "../../context/AuthContext";
 
-export default function PostCard({ singlePost }) {
+export const PostCard = ({ singlePost }) => {
+  const { fetchagain, setFetchAgain, user } = UserAuth();
   const handleDelete = async (id) => {
     await postDataService.deletePost(id);
+    setFetchAgain(!fetchagain);
   };
   return (
     <Card sx={{ width: 345, height: 375 }}>
@@ -44,25 +46,31 @@ export default function PostCard({ singlePost }) {
             : singlePost.desc}
         </Typography>
       </CardContent>
-      <CardActions
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "10px",
-          bgcolor: "lightgray",
-        }}
-      >
-        <Divider />
-        <Button
-          variant="outlined"
-          aria-label="delete"
-          onClick={() => handleDelete(singlePost.id)}
-        >
-          <DeleteIcon color="error" />
-        </Button>
-        <EditPost />
-      </CardActions>
+
+      {user?.uid === singlePost.owner && (
+        <>
+          <CardActions
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+              bgcolor: "lightgray",
+            }}
+          >
+            <Button
+              variant="outlined"
+              aria-label="delete"
+              onClick={() => handleDelete(singlePost.id)}
+            >
+              <DeleteIcon color="error" />
+            </Button>
+            <EditPost singlePost={singlePost} />
+          </CardActions>
+        </>
+      )}
     </Card>
   );
-}
+};
+
+export default PostCard;
