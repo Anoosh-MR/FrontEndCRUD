@@ -85,6 +85,7 @@ const CreatePost = () => {
           setOpen(false);
           setFetchAgain(!fetchagain);
           setProgress("");
+          setfile("");
         });
       }
     );

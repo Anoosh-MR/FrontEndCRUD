@@ -84,6 +84,7 @@ const EditPost = ({ singlePost }) => {
           setOpen(false);
           setFetchAgain(!fetchagain);
           setProgress("");
+          setfile("");
         });
       }
     );
